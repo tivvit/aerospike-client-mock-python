@@ -40,11 +40,11 @@ from AerospikeClientMock import AerospikeClientMock
 from AerospikePredicatesMock import AerospikePredicatesMock
 
 asm = AerospikeClientMock()
-self.asm.put(("a", "b", 1), {"a": 1, "b": 1})
-self.asm.put(("a", "b", 2), {"a": 2, "b": 2})
-self.asm.put(("a", "b", 3), {"a": 3, "b": 3})
-self.asm.put(("a", "c", 4), {"a": 4, "b": 4})
-query = self.asm.query('a', 'b')
+asm.put(("a", "b", 1), {"a": 1, "b": 1})
+asm.put(("a", "b", 2), {"a": 2, "b": 2})
+asm.put(("a", "b", 3), {"a": 3, "b": 3})
+asm.put(("a", "c", 4), {"a": 4, "b": 4})
+query = asm.query('a', 'b')
 query.select('a', 'c')
 query.where(AerospikePredicatesMock().equals("a", 1))
 print query.results()
