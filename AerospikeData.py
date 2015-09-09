@@ -40,10 +40,13 @@ class AerospikeData(object):
         del self._data[key]
 
     def __repr__(self):
+        return str(self.dump())
+
+    def dump(self):
         if self.valid:
-            return str(self._data)
+            return self._data
         else:
-            return str(None)
+            return None
 
     def iteritems(self):
         for k, v in self._data.iteritems():

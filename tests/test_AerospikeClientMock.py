@@ -21,6 +21,12 @@ class TestAerospikeClientMock(unittest.TestCase):
         self.assertEqual("{('a', 'b', 'c'): {'a': 1}}", str(asm))
         self.assertEqual("(('a', 'b', 'c'), {'a': 1}, {'gen': 1, 'ttl': 0})", str(asm.get(key)))
 
+    def test_dump(self):
+        asm = AerospikeClientMock()
+        key = ("a", "b", "c")
+        asm.put(key, {"a": 1})
+        self.assertEqual({('a', 'b', 'c'): {'a': 1}}, asm.dump())
+
     def test_incr(self):
         asm = AerospikeClientMock()
         key = ("a", "b", "c")

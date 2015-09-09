@@ -183,10 +183,13 @@ class AerospikeClientMock(object):
     # todo admin functions
 
     def __repr__(self):
+        return str(self.dump())
+
+    def dump(self):
         #refresh keys
         for k in self.storage:
             self.exists(k)
-        return str(self.storage)
+        return dict([(key, value.dump()) for key, value in self.storage.items()])
 
     def __get_ttl(self, meta):
         if meta and "ttl" in meta:
