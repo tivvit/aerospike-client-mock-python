@@ -25,7 +25,9 @@ class TestAerospikeScanMock(unittest.TestCase):
 
     def test_scan_callback(self):
         result = []
-        def callback((key, meta, bins)):
+
+        def callback(data):
+            (key, meta, bins) = data
             result.append((key, meta, bins))
         scan = self.asm.scan('a', 'b')
         scan.select('a', 'c')

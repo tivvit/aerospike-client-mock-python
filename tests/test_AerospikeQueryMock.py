@@ -26,7 +26,9 @@ class TestAerospikeQueryMock(unittest.TestCase):
 
     def test_query_callback(self):
         result = []
-        def callback((key, meta, bins)):
+
+        def callback(data):
+            (key, meta, bins) = data
             result.append((key, meta, bins))
         query = self.asm.query('a', 'b')
         query.select('a', 'c')

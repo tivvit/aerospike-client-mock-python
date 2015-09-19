@@ -56,5 +56,5 @@ class AerospikeData(object):
             return None
 
     def iteritems(self):
-        for k, v in self._data.iteritems():
+        for k, v in self._data.items():
             yield k, v
