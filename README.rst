@@ -55,7 +55,7 @@ Query example
 .. code-block:: python
 
     from AerospikeClientMock import AerospikeClientMock
-    from AerospikePredicatesMock import AerospikePredicatesMock
+    from AerospikeClientMock import AerospikePredicatesMock
 
     asm = AerospikeClientMock()
     asm.put(("a", "b", 1), {"a": 1, "b": 1})
