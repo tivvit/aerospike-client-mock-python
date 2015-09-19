@@ -6,7 +6,7 @@ class AerospikeScanMock(object):
         self.results_list = []
 
     def select(self, *args):
-        for key, entry in self.client.storage.iteritems():
+        for key, entry in self.client.storage.items():
             if key[0] == self.namespace and \
                 (self.set == None or key[1] == self.set):
                 self.results_list.append(self.client.select(key, list(args)))
