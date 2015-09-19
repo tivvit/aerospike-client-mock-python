@@ -1,6 +1,6 @@
-from AerospikeData import AerospikeData
-from AerospikeQueryMock import AerospikeQueryMock
-from AerospikeScanMock import AerospikeScanMock
+from .AerospikeData import AerospikeData
+from .AerospikeQueryMock import AerospikeQueryMock
+from .AerospikeScanMock import AerospikeScanMock
 
 
 class AerospikeClientMock(object):
