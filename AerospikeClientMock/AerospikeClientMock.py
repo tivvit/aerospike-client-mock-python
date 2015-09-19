@@ -1,9 +1,3 @@
-#!/usr/bin/env python2
-# -*- coding: utf-8 -*-
-#
-#  aerospike mockserver
-
-
 from AerospikeData import AerospikeData
 from AerospikeQueryMock import AerospikeQueryMock
 from AerospikeScanMock import AerospikeScanMock

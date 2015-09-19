@@ -8,7 +8,7 @@ class TestAerospikeClientMock(unittest.TestCase):
 
     def test_blank_init(self):
         asm = AerospikeClientMock()
-        self.assertEqual("{}", str(asm))
+        self.assertEqual({}, asm.dump())
 
     def test_connected(self):
         asm = AerospikeClientMock()
@@ -18,8 +18,8 @@ class TestAerospikeClientMock(unittest.TestCase):
         asm = AerospikeClientMock()
         key = ("a", "b", "c")
         asm.put(key, {"a": 1})
-        self.assertEqual("{('a', 'b', 'c'): {'a': 1}}", str(asm))
-        self.assertEqual("(('a', 'b', 'c'), {'a': 1}, {'gen': 1, 'ttl': 0})", str(asm.get(key)))
+        self.assertEqual({('a', 'b', 'c'): {'a': 1}}, asm.dump())
+        self.assertEqual((('a', 'b', 'c'), {'a': 1}, {'gen': 1, 'ttl': 0}), asm.get(key))
 
     def test_dump(self):
         asm = AerospikeClientMock()
@@ -32,58 +32,58 @@ class TestAerospikeClientMock(unittest.TestCase):
         key = ("a", "b", "c")
         asm.put(key, {"a": 1})
         asm.increment(key, "a", 1)
-        self.assertEqual("{('a', 'b', 'c'): {'a': 2}}", str(asm))
-        self.assertEqual("(('a', 'b', 'c'), {'a': 2}, {'gen': 2, 'ttl': 0})", str(asm.get(key)))
+        self.assertEqual({('a', 'b', 'c'): {'a': 2}}, asm.dump())
+        self.assertEqual((('a', 'b', 'c'), {'a': 2}, {'gen': 2, 'ttl': 0}), asm.get(key))
         asm.increment(key, "a", 1)
-        self.assertEqual("{('a', 'b', 'c'): {'a': 3}}", str(asm))
-        self.assertEqual("(('a', 'b', 'c'), {'a': 3}, {'gen': 3, 'ttl': 0})", str(asm.get(key)))
+        self.assertEqual({('a', 'b', 'c'): {'a': 3}}, asm.dump())
+        self.assertEqual((('a', 'b', 'c'), {'a': 3}, {'gen': 3, 'ttl': 0}), asm.get(key))
 
     def test_incr_value(self):
         asm = AerospikeClientMock()
         key = ("a", "b", "c")
         asm.put(key, {"a": 1})
         asm.increment(key, "a", 2)
-        self.assertEqual("{('a', 'b', 'c'): {'a': 3}}", str(asm))
-        self.assertEqual("(('a', 'b', 'c'), {'a': 3}, {'gen': 2, 'ttl': 0})", str(asm.get(key)))
+        self.assertEqual({('a', 'b', 'c'): {'a': 3}}, asm.dump())
+        self.assertEqual((('a', 'b', 'c'), {'a': 3}, {'gen': 2, 'ttl': 0}), asm.get(key))
 
     def test_undefined_incr(self):
         asm = AerospikeClientMock()
         key = ("a", "b", "c")
         asm.increment(key, "a", 1)
-        self.assertEqual("{('a', 'b', 'c'): {'a': 1}}", str(asm))
-        self.assertEqual("(('a', 'b', 'c'), {'a': 1}, {'gen': 1, 'ttl': 0})", str(asm.get(key)))
+        self.assertEqual({('a', 'b', 'c'): {'a': 1}}, asm.dump())
+        self.assertEqual((('a', 'b', 'c'), {'a': 1}, {'gen': 1, 'ttl': 0}), asm.get(key))
 
     def test_append(self):
         asm = AerospikeClientMock()
         key = ("a", "b", "c")
         asm.put(key, {"word": "ello"})
         asm.prepend(key, "word", "h")
-        self.assertEqual("{('a', 'b', 'c'): {'word': 'hello'}}", str(asm))
-        self.assertEqual("(('a', 'b', 'c'), {'word': 'hello'}, {'gen': 2, 'ttl': 0})", str(asm.get(key)))
+        self.assertEqual({('a', 'b', 'c'): {'word': 'hello'}}, asm.dump())
+        self.assertEqual((('a', 'b', 'c'), {'word': 'hello'}, {'gen': 2, 'ttl': 0}), asm.get(key))
 
     def test_prepend(self):
         asm = AerospikeClientMock()
         key = ("a", "b", "c")
         asm.put(key, {"word": "hell"})
         asm.append(key, "word", "o")
-        self.assertEqual("{('a', 'b', 'c'): {'word': 'hello'}}", str(asm))
-        self.assertEqual("(('a', 'b', 'c'), {'word': 'hello'}, {'gen': 2, 'ttl': 0})", str(asm.get(key)))
+        self.assertEqual({('a', 'b', 'c'): {'word': 'hello'}}, asm.dump())
+        self.assertEqual((('a', 'b', 'c'), {'word': 'hello'}, {'gen': 2, 'ttl': 0}), asm.get(key))
 
     def test_get(self):
         asm = AerospikeClientMock()
         key = ("a", "b", "c")
         asm.put(key, {"a": 1})
-        self.assertEqual("(('a', 'b', 'c'), {'a': 1}, {'gen': 1, 'ttl': 0})", str(asm.get(key)))
+        self.assertEqual((('a', 'b', 'c'), {'a': 1}, {'gen': 1, 'ttl': 0}), asm.get(key))
         # test if not changing gen
-        self.assertEqual("(('a', 'b', 'c'), {'a': 1}, {'gen': 1, 'ttl': 0})", str(asm.get(key)))
+        self.assertEqual((('a', 'b', 'c'), {'a': 1}, {'gen': 1, 'ttl': 0}), asm.get(key))
 
     def test_select(self):
         asm = AerospikeClientMock()
         key = ("a", "b", "c")
         asm.put(key, {"a": 1, "b": 2, "c": 3})
-        self.assertEqual("(('a', 'b', 'c'), {'a': 1, 'c': 3}, {'gen': 1, 'ttl': 0})", str(asm.select(key, ["a", "c"])))
+        self.assertEqual((('a', 'b', 'c'), {'a': 1, 'c': 3}, {'gen': 1, 'ttl': 0}), asm.select(key, ["a", "c"]))
         # test if not changing gen
-        self.assertEqual("(('a', 'b', 'c'), {'a': 1, 'd': None}, {'gen': 1, 'ttl': 0})", str(asm.select(key, ["a", "d"])))
+        self.assertEqual((('a', 'b', 'c'), {'a': 1, 'd': None}, {'gen': 1, 'ttl': 0}), asm.select(key, ["a", "d"]))
 
     def test_exists(self):
         asm = AerospikeClientMock()
@@ -102,23 +102,23 @@ class TestAerospikeClientMock(unittest.TestCase):
         asm = AerospikeClientMock()
         key = ("a", "b", "c")
         asm.put(key, {"a": 1})
-        self.assertEquals("{('a', 'b', 'c'): {'a': 1}}", str(asm))
+        self.assertEquals({('a', 'b', 'c'): {'a': 1}}, asm.dump())
         asm.remove(key)
-        self.assertEquals("{}", str(asm))
+        self.assertEquals({}, asm.dump())
         self.assertEquals((False, None), asm.exists(key))
 
     def test_remove_bin(self):
         asm = AerospikeClientMock()
         key = ("a", "b", "c")
         asm.put(key, {"a": 1, "b": 1, "c": 1, "d": 1})
-        self.assertEquals("{('a', 'b', 'c'): {'a': 1, 'c': 1, 'b': 1, 'd': 1}}", str(asm))
-        self.assertEqual("(('a', 'b', 'c'), {'a': 1, 'c': 1, 'b': 1, 'd': 1}, {'gen': 1, 'ttl': 0})", str(asm.get(key)))
+        self.assertEquals({('a', 'b', 'c'): {'a': 1, 'c': 1, 'b': 1, 'd': 1}}, asm.dump())
+        self.assertEqual((('a', 'b', 'c'), {'a': 1, 'c': 1, 'b': 1, 'd': 1}, {'gen': 1, 'ttl': 0}), asm.get(key))
         asm.remove_bin(key, ["b", "d"])
-        self.assertEquals("{('a', 'b', 'c'): {'a': 1, 'c': 1}}", str(asm))
-        self.assertEqual("(('a', 'b', 'c'), {'a': 1, 'c': 1}, {'gen': 2, 'ttl': 0})", str(asm.get(key)))
+        self.assertEquals({('a', 'b', 'c'): {'a': 1, 'c': 1}}, asm.dump())
+        self.assertEqual((('a', 'b', 'c'), {'a': 1, 'c': 1}, {'gen': 2, 'ttl': 0}), asm.get(key))
         asm.remove_bin(key, ["c"])
-        self.assertEquals("{('a', 'b', 'c'): {'a': 1}}", str(asm))
-        self.assertEqual("(('a', 'b', 'c'), {'a': 1}, {'gen': 3, 'ttl': 0})", str(asm.get(key)))
+        self.assertEquals({('a', 'b', 'c'): {'a': 1}}, asm.dump())
+        self.assertEqual((('a', 'b', 'c'), {'a': 1}, {'gen': 3, 'ttl': 0}), asm.get(key))
 
     def test_get_many(self):
         asm = AerospikeClientMock()
@@ -133,7 +133,7 @@ class TestAerospikeClientMock(unittest.TestCase):
             ("a", "b", 4),
             ("a", "b", 5),
         ]
-        self.assertEqual("{1: (('a', 'b', 1), {'a': 1}, {'gen': 1, 'ttl': 0}), 2: (('a', 'b', 2), {'a': 2}, {'gen': 1, 'ttl': 0}), 3: (('a', 'b', 3), {'a': 3}, {'gen': 1, 'ttl': 0}), 4: (('a', 'b', 4), {'a': 4}, {'gen': 1, 'ttl': 0}), 5: None}", str(asm.get_many(keys)))
+        self.assertEqual({1: (('a', 'b', 1), {'a': 1}, {'gen': 1, 'ttl': 0}), 2: (('a', 'b', 2), {'a': 2}, {'gen': 1, 'ttl': 0}), 3: (('a', 'b', 3), {'a': 3}, {'gen': 1, 'ttl': 0}), 4: (('a', 'b', 4), {'a': 4}, {'gen': 1, 'ttl': 0}), 5: None}, asm.get_many(keys))
 
     def test_exists_many(self):
         asm = AerospikeClientMock()
@@ -148,7 +148,7 @@ class TestAerospikeClientMock(unittest.TestCase):
             ("a", "b", 4),
             ("a", "b", 5),
         ]
-        self.assertEqual("{1: {'gen': 1, 'ttl': 0}, 2: {'gen': 1, 'ttl': 0}, 3: {'gen': 1, 'ttl': 0}, 4: {'gen': 1, 'ttl': 0}, 5: None}", str(asm.exists_many(keys)))
+        self.assertEqual({1: {'gen': 1, 'ttl': 0}, 2: {'gen': 1, 'ttl': 0}, 3: {'gen': 1, 'ttl': 0}, 4: {'gen': 1, 'ttl': 0}, 5: None}, asm.exists_many(keys))
 
     def test_select_many(self):
         asm = AerospikeClientMock()
@@ -163,9 +163,9 @@ class TestAerospikeClientMock(unittest.TestCase):
             ("a", "b", 4),
             ("a", "b", 5),
         ]
-        self.assertEqual("{('a', 'b', 3): {'a': 3, 'b': 3}, ('a', 'b', 2): {'a': 2, 'b': 2}, ('a', 'b', 4): {'a': 4, 'b': 4}, ('a', 'b', 1): {'a': 1, 'b': 1}}", str(asm))
-        self.assertEqual("{1: (('a', 'b', 1), {'a': 1, 'b': 1}, {'gen': 1, 'ttl': 0}), 2: (('a', 'b', 2), {'a': 2, 'b': 2}, {'gen': 1, 'ttl': 0}), 3: (('a', 'b', 3), {'a': 3, 'b': 3}, {'gen': 1, 'ttl': 0}), 4: (('a', 'b', 4), {'a': 4, 'b': 4}, {'gen': 1, 'ttl': 0}), 5: None}", str(asm.select_many(keys, ["a", "b"])))
-        self.assertEqual("{1: (('a', 'b', 1), {'b': 1}, {'gen': 1, 'ttl': 0}), 2: (('a', 'b', 2), {'b': 2}, {'gen': 1, 'ttl': 0}), 3: (('a', 'b', 3), {'b': 3}, {'gen': 1, 'ttl': 0}), 4: (('a', 'b', 4), {'b': 4}, {'gen': 1, 'ttl': 0}), 5: None}", str(asm.select_many(keys, ["b"])))
+        self.assertEqual({('a', 'b', 3): {'a': 3, 'b': 3}, ('a', 'b', 2): {'a': 2, 'b': 2}, ('a', 'b', 4): {'a': 4, 'b': 4}, ('a', 'b', 1): {'a': 1, 'b': 1}}, asm.dump())
+        self.assertEqual({1: (('a', 'b', 1), {'a': 1, 'b': 1}, {'gen': 1, 'ttl': 0}), 2: (('a', 'b', 2), {'a': 2, 'b': 2}, {'gen': 1, 'ttl': 0}), 3: (('a', 'b', 3), {'a': 3, 'b': 3}, {'gen': 1, 'ttl': 0}), 4: (('a', 'b', 4), {'a': 4, 'b': 4}, {'gen': 1, 'ttl': 0}), 5: None}, asm.select_many(keys, ["a", "b"]))
+        self.assertEqual({1: (('a', 'b', 1), {'b': 1}, {'gen': 1, 'ttl': 0}), 2: (('a', 'b', 2), {'b': 2}, {'gen': 1, 'ttl': 0}), 3: (('a', 'b', 3), {'b': 3}, {'gen': 1, 'ttl': 0}), 4: (('a', 'b', 4), {'b': 4}, {'gen': 1, 'ttl': 0}), 5: None}, asm.select_many(keys, ["b"]))
 
 
 if __name__ == '__main__':

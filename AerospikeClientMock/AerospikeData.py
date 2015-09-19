@@ -1,5 +1,6 @@
 import time
 
+
 class AerospikeData(object):
     def __init__(self, bins, ttl=0):
         self.generation = 1
@@ -41,6 +42,12 @@ class AerospikeData(object):
 
     def __repr__(self):
         return str(self.dump())
+
+    def __eq__(self, other):
+        if isinstance(other, dict):
+            return self.dump() == other
+
+        raise NotImplementedError("Cannot compare to %s" % type(other))
 
     def dump(self):
         if self.valid:

@@ -2,7 +2,7 @@
 
 * This mock supports all standard Aerospike python client operations except operations listed in todo section
 * Scan and query with where predicates also supported
-* Support for dumping cluster state to string
+* Support for dumping cluster state to string or to dict
 
 ### Example
 
@@ -18,6 +18,8 @@ print asm.get(key)
 
 # use string conversion for testing cluster state
 print str(asm)
+# or use to dict dump
+print asm.dump()
 ```
 #### With TTL
 TTL has to be provided via constructor, because TTL is set on server side in standard client.

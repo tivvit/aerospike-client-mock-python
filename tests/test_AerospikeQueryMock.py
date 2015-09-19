@@ -1,6 +1,6 @@
 import unittest
-from AerospikeClientMock import AerospikeClientMock
-from AerospikePredicatesMock import AerospikePredicatesMock
+
+from AerospikeClientMock import AerospikeClientMock, AerospikePredicatesMock
 
 
 class TestAerospikeQueryMock(unittest.TestCase):
