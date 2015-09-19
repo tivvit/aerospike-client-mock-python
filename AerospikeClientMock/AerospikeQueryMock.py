@@ -11,6 +11,9 @@ class AerospikeQueryMock(object):
                 (self.set is None or key[1] == self.set):
                 self.results_list.append(self.client.select(key, list(args)))
 
+        # dict order is not persistent across python versions - sort by keys
+        self.results_list = sorted(self.results_list, key=lambda x: x[0])
+
     def where(self, predicate):
         self.results_list = predicate(self.results_list)
 

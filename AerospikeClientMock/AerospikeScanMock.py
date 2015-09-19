@@ -8,8 +8,11 @@ class AerospikeScanMock(object):
     def select(self, *args):
         for key, entry in self.client.storage.items():
             if key[0] == self.namespace and \
-                (self.set == None or key[1] == self.set):
+                (self.set is None or key[1] == self.set):
                 self.results_list.append(self.client.select(key, list(args)))
+
+        # dict order is not persistent across python versions - sort by keys
+        self.results_list = sorted(self.results_list, key=lambda x: x[0])
 
     def results(self, policy=None):
         return self.results_list
