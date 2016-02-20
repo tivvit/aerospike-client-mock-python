@@ -1,5 +1,9 @@
 Aerospike client mock for python
 ================================
+
+.. image:: https://badges.gitter.im/tivvit/aerospike-client-mock-python.svg
+   :alt: Join the chat at https://gitter.im/tivvit/aerospike-client-mock-python
+   :target: https://gitter.im/tivvit/aerospike-client-mock-python?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
 .. image:: https://img.shields.io/pypi/v/AerospikeClientMock.svg
 .. image:: https://img.shields.io/pypi/wheel/AerospikeClientMock.svg
 .. image:: https://api.travis-ci.org/tivvit/aerospike-client-mock-python.svg?branch=master
