@@ -15,9 +15,9 @@ class TestAerospikeScanMock(unittest.TestCase):
         scan.select('a', 'c')
         self.assertEqual(
             [
-                (('a', 'b', 1), {'a': 1, 'c': None}, {'gen': 1, 'ttl': 0}),
-                (('a', 'b', 2), {'a': 2, 'c': None}, {'gen': 1, 'ttl': 0}),
-                (('a', 'b', 3), {'a': 3, 'c': None}, {'gen': 1, 'ttl': 0})
+                (('a', 'b', 1), {'gen': 1, 'ttl': 0}, {'a': 1, 'c': None}),
+                (('a', 'b', 2), {'gen': 1, 'ttl': 0}, {'a': 2, 'c': None}),
+                (('a', 'b', 3), {'gen': 1, 'ttl': 0}, {'a': 3, 'c': None})
             ], scan.results())
 
     def test_scan_namespace(self):
@@ -25,10 +25,10 @@ class TestAerospikeScanMock(unittest.TestCase):
         scan.select('a', 'b')
         self.assertEqual(
             [
-                (('a', 'b', 1), {'a': 1, 'b': 1}, {'gen': 1, 'ttl': 0}),
-                (('a', 'b', 2), {'a': 2, 'b': 2}, {'gen': 1, 'ttl': 0}),
-                (('a', 'b', 3), {'a': 3, 'b': 3}, {'gen': 1, 'ttl': 0}),
-                (('a', 'c', 4), {'a': 4, 'b': 4}, {'gen': 1, 'ttl': 0}),
+                (('a', 'b', 1), {'gen': 1, 'ttl': 0}, {'a': 1, 'b': 1}),
+                (('a', 'b', 2), {'gen': 1, 'ttl': 0}, {'a': 2, 'b': 2}),
+                (('a', 'b', 3), {'gen': 1, 'ttl': 0}, {'a': 3, 'b': 3}),
+                (('a', 'c', 4), {'gen': 1, 'ttl': 0}, {'a': 4, 'b': 4}),
             ], scan.results())
 
     def test_scan_callback(self):
@@ -43,9 +43,9 @@ class TestAerospikeScanMock(unittest.TestCase):
         scan.foreach(callback)
         self.assertEqual(
             [
-                ((('a', 'b', 1), {'a': 1, 'c': None}, {'gen': 1, 'ttl': 0}),
-                 (('a', 'b', 2), {'a': 2, 'c': None}, {'gen': 1, 'ttl': 0}),
-                 (('a', 'b', 3), {'a': 3, 'c': None}, {'gen': 1, 'ttl': 0}))
+                ((('a', 'b', 1), {'gen': 1, 'ttl': 0}, {'a': 1, 'c': None}),
+                 (('a', 'b', 2), {'gen': 1, 'ttl': 0}, {'a': 2, 'c': None}),
+                 (('a', 'b', 3), {'gen': 1, 'ttl': 0}, {'a': 3, 'c': None}))
             ],
             result)
 

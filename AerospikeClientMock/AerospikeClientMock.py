@@ -1,3 +1,9 @@
+#!/usr/bin/env python2
+# -*- coding: utf-8 -*-
+#
+#  aerospike mockserver
+
+
 from .AerospikeData import AerospikeData
 from .AerospikeQueryMock import AerospikeQueryMock
 from .AerospikeScanMock import AerospikeScanMock
@@ -19,19 +25,20 @@ class AerospikeClientMock(object):
 
     def get(self, key, policy=None):
         exists = self.exists(key)[0]
-        return key, self.storage[key] if exists else None, \
-               self.storage[key].meta if exists else None
+        return key, self.storage[key].meta if exists else None, \
+               self.storage[key] if exists else None
 
     def select(self, key, bins, policy=None):
         result = self.get(key)
-        result_value = result[1]
+        result_value = result[2]
         for bin in bins:
             if not bin in result_value:
                 result_value[bin] = None
         result = (key,
+                  result[1],
                   dict((bin, value) for bin, value in result_value.iteritems()
-                  if bin in bins),
-                  result[2])
+                       if bin in bins),
+                  )
         return result
 
     def exists(self, key, policy=None):
@@ -96,22 +103,24 @@ class AerospikeClientMock(object):
     def operate(key, list, meta=None, policy=None):
         raise NotImplementedError
 
+    # https://pythonhosted.org/aerospike/client.html#aerospike.Client.get_many
+    # Warning The return type changed to list starting with version 1.0.50.
     def get_many(self, keys, policy=None):
-        result = {}
-        for id, key in enumerate(keys, 1):
-            result[id] = self.get(key) if self.exists(key)[0] else None
+        result = []
+        for key in keys:
+            result.append(self.get(key))
         return result
 
     def exists_many(self, keys, policy=None):
-        result = {}
-        for id, key in enumerate(keys, 1):
-            result[id] = self.exists(key)[1] if self.exists(key)[0] else None
+        result = []
+        for key in keys:
+            result.append((key, self.exists(key)[1]))
         return result
 
     def select_many(self, keys, bins, policy=None):
-        result = {}
+        result = []
         for id, key in enumerate(keys, 1):
-            result[id] = self.select(key, bins) if self.exists(key)[0] else None
+            result.append(self.select(key, bins) if self.exists(key)[0] else None)
         return result
 
     def scan(self, namespace, set=None):
