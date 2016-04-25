@@ -224,10 +224,10 @@ class TestAerospikeClientTtlMock(unittest.TestCase):
                     {'gen': 1, 'ttl': self.get_time(default_ttl)},
                     {'a': 2}
                 ), (
-                    ('a', 'b', 3),
-                    {'gen': 1, 'ttl': self.get_time(default_ttl)},
-                    {'a': 3}
-                ),
+                ('a', 'b', 3),
+                {'gen': 1, 'ttl': self.get_time(default_ttl)},
+                {'a': 3}
+            ),
                 (
                     ('a', 'b', 4),
                     {'gen': 1, 'ttl': self.get_time(default_ttl)},
@@ -258,9 +258,9 @@ class TestAerospikeClientTtlMock(unittest.TestCase):
         self.assertEqual(
             [
                 (('a', 'b', 1), {'gen': 1, 'ttl': self.get_time(default_ttl)}),
-                (('a', 'b', 2),{'gen': 1, 'ttl': self.get_time(default_ttl)}),
-                (('a', 'b', 3),{'gen': 1, 'ttl': self.get_time(default_ttl)}),
-                (('a', 'b', 4),{'gen': 1, 'ttl': self.get_time(default_ttl)}),
+                (('a', 'b', 2), {'gen': 1, 'ttl': self.get_time(default_ttl)}),
+                (('a', 'b', 3), {'gen': 1, 'ttl': self.get_time(default_ttl)}),
+                (('a', 'b', 4), {'gen': 1, 'ttl': self.get_time(default_ttl)}),
                 (('a', 'b', 5), None)
             ]
             , asm.exists_many(keys))

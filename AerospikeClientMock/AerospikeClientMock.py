@@ -120,7 +120,8 @@ class AerospikeClientMock(object):
     def select_many(self, keys, bins, policy=None):
         result = []
         for id, key in enumerate(keys, 1):
-            result.append(self.select(key, bins) if self.exists(key)[0] else None)
+            result.append(
+                self.select(key, bins) if self.exists(key)[0] else None)
         return result
 
     def scan(self, namespace, set=None):
@@ -144,7 +145,8 @@ class AerospikeClientMock(object):
     def apply(self, key, module, function, args, policy=None):
         raise NotImplementedError
 
-    def scan_apply(ns, set, module, function, args=None, policy=None, options=None):
+    def scan_apply(ns, set, module, function, args=None, policy=None,
+                   options=None):
         raise NotImplementedError
 
     def scan_info(self, scan_id):
@@ -189,14 +191,13 @@ class AerospikeClientMock(object):
         return str(self.dump())
 
     def dump(self):
-        #refresh keys
+        # refresh keys
         for k in self.storage:
             self.exists(k)
-        return dict([(key, value.dump()) for key, value in self.storage.items()])
+        return dict(
+            [(key, value.dump()) for key, value in self.storage.items()])
 
     def __get_ttl(self, meta):
         if meta and "ttl" in meta:
             return meta["ttl"]
         return self.default_ttl
-
-
