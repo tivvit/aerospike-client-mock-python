@@ -52,7 +52,6 @@ class AerospikeClientMock(object):
         return exists, self.storage[key].meta if exists else None
 
     def put(self, key, bins, meta=None, policy=None, serializer=None):
-        print key, bins
         if key in self.storage:
             for bin, val in bins.items():
                 self.storage[key].update(bin, val,

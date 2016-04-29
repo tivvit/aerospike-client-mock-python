@@ -4,7 +4,7 @@ from setuptools import setup
 
 setup(
     name='AerospikeClientMock',
-    version='1.0.2',
+    version='1.0.3',
     description='Aerospike client mock',
     long_description=
     """
