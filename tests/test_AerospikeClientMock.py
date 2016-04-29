@@ -21,6 +21,10 @@ class TestAerospikeClientMock(unittest.TestCase):
         self.assertEqual({('a', 'b', 'c'): {'a': 1}}, asm.dump())
         self.assertEqual((('a', 'b', 'c'), {'gen': 1, 'ttl': 0}, {'a': 1}),
                          asm.get(key))
+        asm.put(key, {"b": 1})
+        self.assertEqual({('a', 'b', 'c'): {'a': 1, 'b': 1}}, asm.dump())
+        self.assertEqual((('a', 'b', 'c'), {'gen': 2, 'ttl': 0}, {'a': 1, 'b': 1}),
+                         asm.get(key))
 
     def test_dump(self):
         asm = AerospikeClientMock()
@@ -56,6 +60,10 @@ class TestAerospikeClientMock(unittest.TestCase):
         asm.increment(key, "a", 1)
         self.assertEqual({('a', 'b', 'c'): {'a': 1}}, asm.dump())
         self.assertEqual((('a', 'b', 'c'), {'gen': 1, 'ttl': 0}, {'a': 1}),
+                         asm.get(key))
+        asm.increment(key, "b", 1)
+        self.assertEqual({('a', 'b', 'c'): {'a': 1, 'b': 1}}, asm.dump())
+        self.assertEqual((('a', 'b', 'c'), {'gen': 2, 'ttl': 0}, {'a': 1, 'b': 1}),
                          asm.get(key))
 
     def test_append(self):

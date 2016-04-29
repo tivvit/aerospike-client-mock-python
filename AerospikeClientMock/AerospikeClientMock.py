@@ -52,7 +52,13 @@ class AerospikeClientMock(object):
         return exists, self.storage[key].meta if exists else None
 
     def put(self, key, bins, meta=None, policy=None, serializer=None):
-        self.storage[key] = AerospikeData(bins, ttl=self.__get_ttl(meta))
+        print key, bins
+        if key in self.storage:
+            for bin, val in bins.items():
+                self.storage[key].update(bin, val,
+                        ttl=self.__get_ttl(meta))
+        else:
+            self.storage[key] = AerospikeData(bins, ttl=self.__get_ttl(meta))
 
     def touch(self, key, val=0, meta=None, policy=None):
         self.storage[key].touch(val if val else self.__get_ttl(meta))
@@ -91,7 +97,7 @@ class AerospikeClientMock(object):
                 self.storage[key][bin] = val + self.storage[key][bin]
 
     def increment(self, key, bin, offset, meta=None, policy=None):
-        if not self.exists(key)[0]:
+        if not (self.exists(key)[0] and bin in self.storage[key]):
             self.put(key, {bin: offset}, meta={"ttl": self.__get_ttl(meta)})
         else:
             if self.__get_ttl(meta):

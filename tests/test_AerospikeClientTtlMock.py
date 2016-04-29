@@ -35,12 +35,12 @@ class TestAerospikeClientTtlMock(unittest.TestCase):
         self.assertEqual(
             (
                 ('a', 'b', 'c'),
-                {'gen': 1, 'ttl': self.get_time(default_ttl)},
+                {'gen': 2, 'ttl': self.get_time(default_ttl)},
                 {'a': 1}
             ), asm.get(key))
         asm.put(key, {"a": 1}, meta={"ttl": 1})
         self.assertEqual(
-            (('a', 'b', 'c'), {'gen': 1, 'ttl': self.get_time(1)}, {'a': 1}),
+            (('a', 'b', 'c'), {'gen': 3, 'ttl': self.get_time(1)}, {'a': 1}),
             asm.get(key))
 
     def test_incr(self):
